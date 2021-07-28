@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_padding">8dp</dimen>
+    <dimen name="edge_margin">24dp</dimen>
+    <dimen name="inner_margin">6dp</dimen>
+    <dimen name="icon_size">200dp</dimen>
+    <dimen name="small_padding">8dp</dimen>
 
     <!-- TODO: Add necessary dimension values -->s
 
