@@ -6,6 +6,8 @@
     <string name="saved_elections">Saved Elections</string>
     <string name="upcoming_elections">Upcoming Elections</string>
     <string name="user_my_location">User my location</string>
+    <string name="my_representatives">My representatives</string>
+    <string name="representative_search">Representative Search</string>
 
 
 </resources>
