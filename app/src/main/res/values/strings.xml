@@ -8,6 +8,10 @@
     <string name="user_my_location">User my location</string>
     <string name="my_representatives">My representatives</string>
     <string name="representative_search">Representative Search</string>
+    <string name="address_line_1">Address line 1</string>
+    <string name="address_line_2">Address line 2</string>
+    <string name="city">City</string>
+    <string name="zip_code">Zip code</string>
 
 
 </resources>
