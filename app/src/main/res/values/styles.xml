@@ -13,5 +13,14 @@
         <item name="android:textColor">@color/darkGray</item>
         <item name="android:paddingVertical">@dimen/small_padding</item>
     </style>
-
+    <style name="CustomSubTitle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CustomToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/secondaryColor</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="android:theme">@style/AppTheme</item>
+    </style>
 </resources>

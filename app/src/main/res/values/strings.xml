@@ -12,6 +12,15 @@
     <string name="address_line_2">Address line 2</string>
     <string name="city">City</string>
     <string name="zip_code">Zip code</string>
+    <string name="unfollow_election">Unfollow election</string>
+    <string name="follow_election">Follow election</string>
+    <string name="state_header">Election Information</string>
+    <string name="state_locations">Voting Locations</string>
+    <string name="state_ballot">Ballot Information</string>
+    <string name="representative_image">Representative image</string>
+    <string name="web_button">Web button</string>
+    <string name="facebook_button">Facebook button</string>
+    <string name="twitter_button">Twitter button</string>
 
 
 </resources>
