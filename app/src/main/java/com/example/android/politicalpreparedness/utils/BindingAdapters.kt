@@ -1,10 +1,15 @@
-package com.example.android.politicalpreparedness.representative.adapter
+package com.example.android.politicalpreparedness.utils
 
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
+import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.representative.model.Representative
 
 @BindingAdapter("profileImage")
 fun fetchImage(view: ImageView, src: String?) {
@@ -26,6 +31,19 @@ fun Spinner.setNewValue(value: String?) {
     }
 }
 
+@BindingAdapter("loadElection")
+fun loadElection(recyclerView: RecyclerView, dataList: ArrayList<Election>) {
+    val adapter = recyclerView.adapter as ElectionListAdapter
+    adapter.submitList(dataList)
+}
+
+@BindingAdapter("loadRepresentatives")
+fun loadRepresentatives(recyclerView: RecyclerView, dataList: ArrayList<Representative>) {
+    val adapter = recyclerView.adapter as RepresentativeListAdapter
+    adapter.submitList(dataList)
+}
+
+@Suppress("UNCHECKED_CAST")
 inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T>{
     return adapter as ArrayAdapter<T>
 }

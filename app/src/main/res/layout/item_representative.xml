@@ -4,12 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="representative"
+            type="com.example.android.politicalpreparedness.representative.model.Representative" />
+        <variable
+            name="clickListener"
+            type="com.example.android.politicalpreparedness.representative.adapter.RepresentativeListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(clickListener)}"
         android:padding="@dimen/default_padding">
 
         <ImageView
@@ -17,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/representative_image"
+            app:profileImage="@{representative.official.photoUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,6 +34,7 @@
             style="@style/CustomSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{representative.office.division.id}"
             tools:text="title"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,6 +43,7 @@
             android:id="@+id/name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{representative.official.name}"
             tools:text="name"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/title_text" />
@@ -43,6 +52,7 @@
             android:id="@+id/party_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{representative.official.party}"
             tools:text="party"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/name_text" />

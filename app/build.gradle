@@ -76,4 +76,7 @@ dependencies {
 
     // Location
     implementation "com.google.android.gms:play-services-location:$version_play_services_location"
+
+    //Koin
+    implementation "io.insert-koin:koin-android:$version_koin"
 }

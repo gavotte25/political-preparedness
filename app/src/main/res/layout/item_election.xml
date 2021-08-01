@@ -3,25 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="election"
+            type="com.example.android.politicalpreparedness.network.models.Election" />
+        <variable
+            name="clickListener"
+            type="com.example.android.politicalpreparedness.election.adapter.ElectionListener" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/default_padding"
+        android:onClick="@{()->clickListener.onClick(election)}"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/election_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{election.name}"
             style="@style/CustomSubTitle"
             tools:text="Election name" />
 
         <TextView
             android:id="@+id/date_text"
             android:layout_width="wrap_content"
+            android:text="@{election.electionDay.toGMTString()}"
             android:layout_height="0dp"
             android:layout_weight="1"
             tools:text="Sun Aug 02 00:00:00 EDT 2021" />
