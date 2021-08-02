@@ -1,21 +1,63 @@
 package com.example.android.politicalpreparedness.election
 
-import androidx.lifecycle.ViewModel
-import com.example.android.politicalpreparedness.database.ElectionDao
+import android.app.Application
+import android.content.Intent
+import android.net.Uri
+import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.*
+import com.example.android.politicalpreparedness.network.models.AdministrationBody
+import com.example.android.politicalpreparedness.network.models.Division
+import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.repo.BaseRepo
+import kotlinx.coroutines.launch
 
-class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
+class VoterInfoViewModel(private val repo: BaseRepo, app: Application) : AndroidViewModel(app) {
+    private var voterInfo: AdministrationBody? = null
+    private val _election = MutableLiveData<Election>()
+    private val _isSaved = MutableLiveData<Boolean>(false)
+    val election: LiveData<Election>
+        get() = _election
+    val isSaved: LiveData<Boolean>
+        get() = _isSaved
 
-    //TODO: Add live data to hold voter info
+    fun getVoterInfo(electionId: Int, division: Division) {
+        viewModelScope.launch {
+            _election.postValue(repo.getSavedElection(electionId))
+            if(_election.value == null) {
+                _election.postValue(repo.getRemoteElection(electionId))
+                _isSaved.postValue(false)
+            } else {
+                _isSaved.postValue(true)
+            }
+            voterInfo = repo.getVoterInfo(electionId, division)
+        }
+    }
 
-    //TODO: Add var and methods to populate voter info
+    fun onClickVotingLocations() {
+        voterInfo?.votingLocationFinderUrl?.let {
+            startActivity(getApplication(), Intent(Intent.ACTION_VIEW, Uri.parse(it)), null)
+        }
+    }
 
-    //TODO: Add var and methods to support loading URLs
+    fun onClickBallotInformation() {
+        voterInfo?.ballotInfoUrl?.let {
+            startActivity(getApplication(), Intent(Intent.ACTION_VIEW, Uri.parse(it)), null)
+        }
+    }
 
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
+    fun saveOrRemoveElection() {
+        viewModelScope.launch {
+            _election.value?.let {
+                if (_isSaved.value == true) {
+                    repo.deleteElection(it.id)
+                    _isSaved.postValue(false)
+                } else {
+                    repo.saveElection(it)
+                    _isSaved.postValue(true)
+                }
+            }
 
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
+        }
+    }
 
 }

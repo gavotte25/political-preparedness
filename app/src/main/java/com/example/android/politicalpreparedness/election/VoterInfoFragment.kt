@@ -6,9 +6,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class VoterInfoFragment : Fragment() {
-
+    private val viewModel: VoterInfoViewModel by viewModel<VoterInfoViewModel>()
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
