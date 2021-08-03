@@ -1,8 +1,10 @@
 package com.example.android.politicalpreparedness.representative
 
 import android.content.Context
+import android.content.Intent
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.view.*
@@ -15,6 +17,7 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListener
 import com.example.android.politicalpreparedness.utils.setNewValue
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
@@ -35,7 +38,8 @@ class DetailFragment : Fragment() {
 
         binding = DataBindingUtil.inflate<FragmentRepresentativeBinding>(inflater, R.layout.fragment_representative, container, false)
         binding.lifecycleOwner = this
-        binding.representativeRecycler.adapter = RepresentativeListAdapter()
+
+        binding.representativeRecycler.adapter = RepresentativeListAdapter(RepresentativeListener {  })
         binding.state.adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, stateList)
         binding.buttonSearch.setOnClickListener{
             val address = getAddressFromUi()

@@ -11,7 +11,7 @@ import com.example.android.politicalpreparedness.databinding.ItemElectionBinding
 //import com.example.android.politicalpreparedness.databinding.ViewholderElectionBinding
 import com.example.android.politicalpreparedness.network.models.Election
 
-class ElectionListAdapter(private val listener: ElectionListener? = null): ListAdapter<Election, ElectionViewHolder>(ElectionDiffCallback()) {
+class ElectionListAdapter(private val listener: ElectionListener): ListAdapter<Election, ElectionViewHolder>(ElectionDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ElectionViewHolder {
         return ElectionViewHolder.from(parent)
@@ -31,9 +31,9 @@ class ElectionViewHolder private  constructor (val binding: ItemElectionBinding)
         }
     }
 
-    fun bind(election: Election, listener: ElectionListener? = null) {
+    fun bind(election: Election, listener: ElectionListener) {
         binding.election = election
-        listener?.let{ binding.clickListener == it }
+        binding.clickListener = listener
         binding.executePendingBindings()
     }
 }

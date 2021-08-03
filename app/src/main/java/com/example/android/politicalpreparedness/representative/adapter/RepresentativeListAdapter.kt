@@ -16,7 +16,7 @@ import com.example.android.politicalpreparedness.databinding.ItemRepresentativeB
 import com.example.android.politicalpreparedness.network.models.Channel
 import com.example.android.politicalpreparedness.representative.model.Representative
 
-class RepresentativeListAdapter(private val listener: RepresentativeListener? = null): ListAdapter<Representative, RepresentativeViewHolder>(RepresentativeDiffCallback()){
+class RepresentativeListAdapter(private val listener: RepresentativeListener): ListAdapter<Representative, RepresentativeViewHolder>(RepresentativeDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepresentativeViewHolder {
         return RepresentativeViewHolder.from(parent)
@@ -38,11 +38,11 @@ class RepresentativeViewHolder private constructor (val binding: ItemRepresentat
         }
     }
 
-    fun bind(item: Representative, listener: RepresentativeListener?) {
+    fun bind(item: Representative, listener: RepresentativeListener) {
         binding.representative = item
         checkAndShowSocialLinks(item.official.channels)
         checkAndShowWWWLinks(item.official.urls)
-        listener?.let{ binding.clickListener }
+        binding.clickListener = listener
         binding.executePendingBindings()
     }
 
@@ -110,8 +110,8 @@ class RepresentativeDiffCallback: DiffUtil.ItemCallback<Representative>() {
     }
 }
 
-class RepresentativeListener(val listener: (Representative)->Unit) {
-    fun onClick(representative: Representative) {
-        listener(representative)
+class RepresentativeListener(val listener: (String)->Unit) {
+    fun onClick(url: String) {
+        listener(url)
     }
 }
