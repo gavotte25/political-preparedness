@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 
 class ElectionsViewModel(private val repo: BaseRepo): ViewModel() {
 
-    private val _upComingElections = MutableLiveData<ArrayList<Election>>()
-    private val _savedElections = MediatorLiveData<ArrayList<Election>>()
-    val upComingElections: LiveData<ArrayList<Election>>
+    private val _upComingElections = MutableLiveData<List<Election>>()
+    private val _savedElections = MediatorLiveData<List<Election>>()
+    val upComingElections: LiveData<List<Election>>
         get() = _upComingElections
-    val savedElections: LiveData<ArrayList<Election>>
+    val savedElections: LiveData<List<Election>>
         get() = _savedElections
 
     init {

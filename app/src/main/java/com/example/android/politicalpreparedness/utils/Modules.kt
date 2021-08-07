@@ -1,7 +1,9 @@
 package com.example.android.politicalpreparedness.utils
 
+import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.election.ElectionsViewModel
 import com.example.android.politicalpreparedness.election.VoterInfoViewModel
+import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.repo.BaseRepo
 import com.example.android.politicalpreparedness.repo.Repository
 import com.example.android.politicalpreparedness.representative.RepresentativeViewModel
@@ -17,12 +19,20 @@ val viewModelModule = module {
         RepresentativeViewModel(get())
     }
     viewModel {
-        VoterInfoViewModel(get(), androidApplication())
+        VoterInfoViewModel(get())
     }
 }
 
 val repoModule = module {
     single {
-        Repository() as BaseRepo
+        Repository(get(), get()) as BaseRepo
+    }
+
+    single {
+        ElectionDatabase.getInstance(androidApplication()).electionDao
+    }
+
+    single {
+        CivicsApi.retrofitService
     }
 }

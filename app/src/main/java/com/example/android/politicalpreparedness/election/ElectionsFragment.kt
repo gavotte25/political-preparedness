@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.ElectionsViewModel.Companion.getDirection
@@ -22,7 +24,7 @@ class ElectionsFragment: Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val binding = DataBindingUtil.inflate<FragmentElectionBinding>(inflater, R.layout.fragment_election, container, false)
+        val binding = FragmentElectionBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
 
         val listener = ElectionListener {
@@ -31,10 +33,16 @@ class ElectionsFragment: Fragment() {
 
         val upComingAdapter = ElectionListAdapter(listener)
         val savedAdapter = ElectionListAdapter(listener)
-        binding.viewModel = viewModel
         binding.upcomingRecycler.adapter = upComingAdapter
+        binding.upcomingRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.savedRecycler.adapter = savedAdapter
-        binding.executePendingBindings()
+        binding.savedRecycler.layoutManager = LinearLayoutManager(requireContext())
+        viewModel.upComingElections.observe(viewLifecycleOwner, Observer {
+            (binding.upcomingRecycler.adapter as ElectionListAdapter).submitList(it)
+        })
+        viewModel.savedElections.observe(viewLifecycleOwner, Observer {
+            (binding.savedRecycler.adapter as ElectionListAdapter).submitList(it)
+        })
         return binding.root
     }
 }

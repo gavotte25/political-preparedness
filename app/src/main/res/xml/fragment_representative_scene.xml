@@ -31,7 +31,7 @@
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@+id/start">
         <OnSwipe
-            app:dragDirection="dragDown"
+            app:dragDirection="dragUp"
             app:touchAnchorId="@id/representative_layout"/>
     </Transition>
 </MotionScene>

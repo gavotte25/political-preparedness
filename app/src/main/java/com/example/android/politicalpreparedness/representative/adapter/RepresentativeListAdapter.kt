@@ -48,19 +48,19 @@ class RepresentativeViewHolder private constructor (val binding: ItemRepresentat
 
     private fun checkAndShowSocialLinks(channels: List<Channel>?) {
         if (channels.isNullOrEmpty()) {
-            binding.facebookButton.visibility = View.INVISIBLE
-            binding.twitterButton.visibility = View.INVISIBLE
+            binding.facebookButton.visibility = View.GONE
+            binding.twitterButton.visibility = View.GONE
         } else {
             val facebookUrl = getFacebookUrl(channels)
             if (facebookUrl.isNullOrBlank()) {
-                binding.facebookButton.visibility = View.INVISIBLE
+                binding.facebookButton.visibility = View.GONE
             } else {
                 enableLink(binding.facebookButton, facebookUrl)
             }
 
             val twitterUrl = getTwitterUrl(channels)
             if (twitterUrl.isNullOrBlank()) {
-                binding.twitterButton.visibility = View.INVISIBLE
+                binding.twitterButton.visibility = View.GONE
             } else {
                 if (!twitterUrl.isNullOrBlank()) { enableLink(binding.twitterButton, twitterUrl) }
             }
@@ -69,7 +69,7 @@ class RepresentativeViewHolder private constructor (val binding: ItemRepresentat
 
     private fun checkAndShowWWWLinks(urls: List<String>?) {
         if (urls.isNullOrEmpty()) {
-            binding.wwwButton.visibility = View.INVISIBLE
+            binding.wwwButton.visibility = View.GONE
         } else {
             enableLink(binding.wwwButton, urls.first())
         }
@@ -110,8 +110,8 @@ class RepresentativeDiffCallback: DiffUtil.ItemCallback<Representative>() {
     }
 }
 
-class RepresentativeListener(val listener: (String)->Unit) {
-    fun onClick(url: String) {
-        listener(url)
+class RepresentativeListener(val listener: (Representative)->Unit) {
+    fun onClick(representative: Representative) {
+        listener(representative)
     }
 }

@@ -5,34 +5,33 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.network.models.Address
-import com.example.android.politicalpreparedness.repo.Repository
+import com.example.android.politicalpreparedness.repo.BaseRepo
 import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.launch
 
-class RepresentativeViewModel(private val repo: Repository): ViewModel() {
+class RepresentativeViewModel(private val repo: BaseRepo): ViewModel() {
 
-    private val _representatives = MutableLiveData(ArrayList<Representative>())
+    private val _representatives = MutableLiveData<List<Representative>>()
     private var _address = MutableLiveData<Address>()
-    val representatives: LiveData<ArrayList<Representative>>
+    private var _checkEmptyResultForUserAcknowledgeFlag = false // If it's true and _representatives is empty, a toast will popup
+    val representatives: LiveData<List<Representative>>
         get() = _representatives
     val address: LiveData<Address>
         get() = _address
-
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
-
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
-
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
-
-     */
-    // TODO: this likely needs to be changed
+    val checkEmptyResultForUserAcknowledgeFlag: Boolean
+        get() = _checkEmptyResultForUserAcknowledgeFlag
+    
     fun getRepresentatives() {
         viewModelScope.launch {
-            _address.value?.let { repo.getRepresentatives(it) }
+            _address.value?.let {
+                _checkEmptyResultForUserAcknowledgeFlag = true
+                _representatives.postValue(repo.getRepresentatives(it))
+            }
         }
+    }
+
+    fun resetFlag() {
+        _checkEmptyResultForUserAcknowledgeFlag = false
     }
 
     fun updateAddress(address: Address) {

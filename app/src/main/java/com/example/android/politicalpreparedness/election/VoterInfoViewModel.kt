@@ -1,9 +1,5 @@
 package com.example.android.politicalpreparedness.election
 
-import android.app.Application
-import android.content.Intent
-import android.net.Uri
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.*
 import com.example.android.politicalpreparedness.network.models.AdministrationBody
 import com.example.android.politicalpreparedness.network.models.Division
@@ -11,8 +7,10 @@ import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.repo.BaseRepo
 import kotlinx.coroutines.launch
 
-class VoterInfoViewModel(private val repo: BaseRepo, app: Application) : AndroidViewModel(app) {
-    private var voterInfo: AdministrationBody? = null
+class VoterInfoViewModel(private val repo: BaseRepo) : ViewModel() {
+    private var _voterInfo: AdministrationBody? = null
+    val voterInfo: AdministrationBody?
+        get() = _voterInfo
     private val _election = MutableLiveData<Election>()
     private val _isSaved = MutableLiveData<Boolean>(false)
     val election: LiveData<Election>
@@ -29,19 +27,7 @@ class VoterInfoViewModel(private val repo: BaseRepo, app: Application) : Android
             } else {
                 _isSaved.postValue(true)
             }
-            voterInfo = repo.getVoterInfo(electionId, division)
-        }
-    }
-
-    fun onClickVotingLocations() {
-        voterInfo?.votingLocationFinderUrl?.let {
-            startActivity(getApplication(), Intent(Intent.ACTION_VIEW, Uri.parse(it)), null)
-        }
-    }
-
-    fun onClickBallotInformation() {
-        voterInfo?.ballotInfoUrl?.let {
-            startActivity(getApplication(), Intent(Intent.ACTION_VIEW, Uri.parse(it)), null)
+            _voterInfo = repo.getVoterInfo(electionId, division)
         }
     }
 

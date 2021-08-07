@@ -5,13 +5,8 @@ import android.widget.ImageView
 import android.widget.Spinner
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.android.politicalpreparedness.R
-import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
-import com.example.android.politicalpreparedness.network.models.Election
-import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
-import com.example.android.politicalpreparedness.representative.model.Representative
 
 @BindingAdapter("profileImage")
 fun fetchImage(view: ImageView, src: String?) {
@@ -28,21 +23,11 @@ fun Spinner.setNewValue(value: String?) {
         is String -> adapter.getPosition(value)
         else -> this.selectedItemPosition
     }
-    if (position >= 0) {
+    if (position > 0) {
         setSelection(position)
+    } else {
+        setSelection(0) // 1st item is whitespace
     }
-}
-
-@BindingAdapter("loadElection")
-fun loadElection(recyclerView: RecyclerView, dataList: ArrayList<Election>) {
-    val adapter = recyclerView.adapter as ElectionListAdapter
-    adapter.submitList(dataList)
-}
-
-@BindingAdapter("loadRepresentatives")
-fun loadRepresentatives(recyclerView: RecyclerView, dataList: ArrayList<Representative>) {
-    val adapter = recyclerView.adapter as RepresentativeListAdapter
-    adapter.submitList(dataList)
 }
 
 @Suppress("UNCHECKED_CAST")

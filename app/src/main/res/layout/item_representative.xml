@@ -15,18 +15,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onClick(clickListener)}"
+        android:onClick="@{() -> clickListener.onClick(representative)}"
         android:padding="@dimen/default_padding">
 
         <ImageView
             android:id="@+id/profile_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/profile_img_size"
+            android:layout_height="@dimen/profile_img_size"
             android:contentDescription="@string/representative_image"
-            app:profileImage="@{representative.official.photoUrl}"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:profileImage="@{representative.official.photoUrl}"
             app:srcCompat="@drawable/ic_profile" />
 
         <TextView
@@ -34,62 +35,67 @@
             style="@style/CustomSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{representative.office.division.id}"
-            tools:text="title"
+            android:layout_marginStart="@dimen/small_margin"
+            android:text="@{representative.office.name}"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="title" />
 
         <TextView
             android:id="@+id/name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_margin"
             android:text="@{representative.official.name}"
-            tools:text="name"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/title_text" />
+            app:layout_constraintTop_toBottomOf="@+id/title_text"
+            tools:text="name" />
 
         <TextView
             android:id="@+id/party_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_margin"
             android:text="@{representative.official.party}"
-            tools:text="party"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/name_text" />
+            app:layout_constraintTop_toBottomOf="@+id/name_text"
+            tools:text="party" />
 
-        <ImageButton
-            android:id="@+id/www_button"
-            android:layout_width="@dimen/image_button"
-            android:layout_height="@dimen/image_button"
-            android:layout_marginEnd="@dimen/inner_margin"
-            android:background="@android:color/transparent"
-            android:scaleType="centerInside"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/facebook_button"
-            app:srcCompat="@drawable/ic_www"
-            android:contentDescription="@string/web_button" />
+            app:layout_constraintEnd_toEndOf="parent">
+            <ImageButton
+                android:id="@+id/www_button"
+                android:layout_width="@dimen/image_button"
+                android:layout_height="@dimen/image_button"
+                android:layout_marginEnd="@dimen/inner_margin"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_www"
+                android:contentDescription="@string/web_button" />
 
-        <ImageButton
-            android:id="@+id/facebook_button"
-            android:layout_width="@dimen/image_button"
-            android:layout_height="@dimen/image_button"
-            android:layout_marginEnd="@dimen/inner_margin"
-            android:background="@android:color/transparent"
-            android:scaleType="centerInside"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/twitter_button"
-            app:srcCompat="@drawable/ic_facebook"
-            android:contentDescription="@string/facebook_button" />
+            <ImageButton
+                android:id="@+id/facebook_button"
+                android:layout_width="@dimen/image_button"
+                android:layout_height="@dimen/image_button"
+                android:layout_marginEnd="@dimen/inner_margin"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_facebook"
+                android:contentDescription="@string/facebook_button" />
 
-        <ImageButton
-            android:id="@+id/twitter_button"
-            android:layout_width="@dimen/image_button"
-            android:layout_height="@dimen/image_button"
-            android:background="@android:color/transparent"
-            android:scaleType="centerInside"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_twitter"
-            android:contentDescription="@string/twitter_button" />
+            <ImageButton
+                android:id="@+id/twitter_button"
+                android:layout_width="@dimen/image_button"
+                android:layout_height="@dimen/image_button"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_twitter"
+                android:contentDescription="@string/twitter_button" />
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

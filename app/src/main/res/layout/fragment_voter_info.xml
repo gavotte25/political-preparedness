@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/default_padding"
             android:singleLine="true"
+            android:title="@{viewModel.election.name}"
             app:layout_constraintTop_toTopOf="parent"
             tools:title="Wakanda Foreva Primary Election" />
 
@@ -37,7 +38,7 @@
             android:id="@+id/state_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/state_header"
+            android:text="@string/state_header"
             style="@style/CustomTitle"
             app:layout_constraintTop_toBottomOf="@id/election_date"
             app:layout_constraintStart_toStartOf="@id/election_date" />
@@ -47,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/state_locations"
-            android:onClick="@{() -> viewModel.onClickVotingLocations()}"
             app:layout_constraintStart_toStartOf="@id/election_date"
             app:layout_constraintTop_toBottomOf="@id/state_header" />
 
@@ -56,7 +56,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/state_ballot"
-            android:onClick="@{() -> viewModel.onClickBallotInformation()}"
             app:layout_constraintStart_toStartOf="@id/election_date"
             app:layout_constraintTop_toBottomOf="@id/state_locations" />
 

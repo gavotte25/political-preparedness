@@ -8,11 +8,10 @@ import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.representative.model.Representative
 
 interface BaseRepo {
-    // TODO: add methods
-    fun getSavedElections(): LiveData<ArrayList<Election>>
-    suspend fun getUpcomingElection(): ArrayList<Election>
-    suspend fun getRepresentatives(address: Address): ArrayList<Representative>
-    suspend fun getVoterInfo(electionId: Int, division: Division): AdministrationBody
+    fun getSavedElections(): LiveData<List<Election>>
+    suspend fun getUpcomingElection(): List<Election>
+    suspend fun getRepresentatives(address: Address): List<Representative>
+    suspend fun getVoterInfo(electionId: Int, division: Division): AdministrationBody?
     suspend fun getSavedElection(electionId: Int): Election?
     suspend fun saveElection(election: Election)
     suspend fun deleteElection(electionId: Int)
