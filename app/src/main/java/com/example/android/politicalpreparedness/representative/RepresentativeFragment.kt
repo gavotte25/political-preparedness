@@ -3,15 +3,16 @@ package com.example.android.politicalpreparedness.representative
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -23,10 +24,7 @@ import com.example.android.politicalpreparedness.representative.adapter.Represen
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListener
 import com.example.android.politicalpreparedness.utils.setNewValue
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.IOException
 import java.security.InvalidParameterException
@@ -35,15 +33,16 @@ import kotlin.jvm.Throws
 
 class DetailFragment : Fragment() {
 
-    companion object {
-        const val LOCATION_SETTING_REQUEST = 1901
-    }
-
     private val viewModel by viewModel<RepresentativeViewModel>()
     private lateinit var binding: FragmentRepresentativeBinding
     private val locationPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
             checkLocationSettingsAndLoadRepresentatives()
+        }
+    }
+    private val locationSettingsRequest = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+        if (checkAndRequestLocationPermissions()) {
+            checkLocationSettingsAndLoadRepresentatives(false)
         }
     }
     override fun onCreateView(inflater: LayoutInflater,
@@ -106,21 +105,19 @@ class DetailFragment : Fragment() {
         val responseTask = settingsClient.checkLocationSettings(builder.build())
         responseTask.apply {
             addOnSuccessListener {
-                FusedLocationProviderClient(requireContext()).lastLocation.addOnSuccessListener {
-                    try {
-                        val address = geoCodeLocation(it)
-                        viewModel.updateAddress(address)
-                        viewModel.getRepresentatives()
-                    } catch (ex: IOException) {
-                        Toast.makeText(requireContext(), ex.message, Toast.LENGTH_SHORT).show()
-                        ex.printStackTrace()
+                val providerClient = FusedLocationProviderClient(requireContext())
+                providerClient.lastLocation.addOnSuccessListener {
+                    if (it == null) {
+                        requestUpdateLocation(providerClient, locationRequest)
+                    } else {
+                        loadRepresentatives(it)
                     }
                 }
             }
             addOnFailureListener {
                 if (it is ResolvableApiException && resolve) {
                     try {
-                        it.startResolutionForResult(requireActivity(), LOCATION_SETTING_REQUEST)
+                        locationSettingsRequest.launch(IntentSenderRequest.Builder(it.resolution).build())
                     } catch (ex: IntentSender.SendIntentException) {
                         Toast.makeText(requireContext(), "Location should be turn on", Toast.LENGTH_SHORT).show()
                         ex.printStackTrace()
@@ -130,9 +127,27 @@ class DetailFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == LOCATION_SETTING_REQUEST) {
-            checkLocationSettingsAndLoadRepresentatives(false)
+    @SuppressLint("MissingPermission")
+    private fun requestUpdateLocation(client: FusedLocationProviderClient, request: LocationRequest) {
+        Toast.makeText(requireContext(), "Getting location, please wait", Toast.LENGTH_SHORT).show()
+        val callback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult?) {
+                p0?.let {
+                    loadRepresentatives(it.lastLocation)
+                }
+            }
+        }
+        client.requestLocationUpdates(request, callback, Looper.myLooper())
+    }
+
+    private fun loadRepresentatives(location: Location) {
+        try {
+            val address = geoCodeLocation(location)
+            viewModel.updateAddress(address)
+            viewModel.getRepresentatives()
+        } catch (ex: IOException) {
+            Toast.makeText(requireContext(), "Please recheck your network", Toast.LENGTH_SHORT).show()
+            ex.printStackTrace()
         }
     }
 

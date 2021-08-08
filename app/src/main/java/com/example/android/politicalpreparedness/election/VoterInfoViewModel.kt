@@ -5,6 +5,7 @@ import com.example.android.politicalpreparedness.network.models.AdministrationBo
 import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.repo.BaseRepo
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class VoterInfoViewModel(private val repo: BaseRepo) : ViewModel() {
@@ -20,8 +21,9 @@ class VoterInfoViewModel(private val repo: BaseRepo) : ViewModel() {
 
     fun getVoterInfo(electionId: Int, division: Division) {
         viewModelScope.launch {
-            _election.postValue(repo.getSavedElection(electionId))
-            if(_election.value == null) {
+            val electionDeferred = async { repo.getSavedElection(electionId)}
+            _election.postValue(electionDeferred.await())
+            if(electionDeferred.await() == null) {
                 _election.postValue(repo.getRemoteElection(electionId))
                 _isSaved.postValue(false)
             } else {

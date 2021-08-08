@@ -62,20 +62,22 @@
             tools:text="party" />
 
         <LinearLayout
+            android:id="@+id/button_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
+
             <ImageButton
                 android:id="@+id/www_button"
                 android:layout_width="@dimen/image_button"
                 android:layout_height="@dimen/image_button"
                 android:layout_marginEnd="@dimen/inner_margin"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/web_button"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_www"
-                android:contentDescription="@string/web_button" />
+                app:srcCompat="@drawable/ic_www" />
 
             <ImageButton
                 android:id="@+id/facebook_button"
@@ -83,18 +85,18 @@
                 android:layout_height="@dimen/image_button"
                 android:layout_marginEnd="@dimen/inner_margin"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/facebook_button"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_facebook"
-                android:contentDescription="@string/facebook_button" />
+                app:srcCompat="@drawable/ic_facebook" />
 
             <ImageButton
                 android:id="@+id/twitter_button"
                 android:layout_width="@dimen/image_button"
                 android:layout_height="@dimen/image_button"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/twitter_button"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_twitter"
-                android:contentDescription="@string/twitter_button" />
+                app:srcCompat="@drawable/ic_twitter" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
